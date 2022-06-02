@@ -8,13 +8,15 @@
 """
 import time
 
+from selenium.webdriver.common.by import By
+
 from common.base_page import BasePage
 
 
 class ShopPage(BasePage):
 
     def shop_iphone(self):
-        self.find_element('id', "com.mimu.mshop:id/cb_register").click()
+        self.click((By.ID, "com.mimu.mshop:id/cb_register"), "取消勾选用户协议")
         time.sleep(2)
-        self.find_element('id', "com.mimu.mshop:id/et_ordinary_phone").send_keys("15533065391")
+        self.input_data((By.ID, "com.mimu.mshop:id/et_ordinary_phone"), "输入手机号码", "15533065391")
         time.sleep(5)

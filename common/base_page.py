@@ -9,8 +9,9 @@
 """
 import logging
 
-from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class BasePage:
@@ -20,105 +21,88 @@ class BasePage:
         :param driver: web驱动器
         """
         self.driver = driver
+        self.logger = logging
 
-    def find_element(self, locate_type, value):
+    def find_element(self, locator, img_doc, timeout=10, frequency=0.5):
         """
-        定位单元素方法
-        :param locate_type: 定位类型 如: id,name,xpath
-        :param value: 元素地址
-        :return: 返回元素内容
+        检测定位元素是否存在
+        :param locator: 元素定位的XPATH元组表达式
+        :param img_doc: 截图说明
+        :param timeout: 等待的超时时间
+        :param frequency: 轮询频率
+        :return:  WebElement元素地址
         """
-        el = None
         try:
-            if locate_type == 'id':
-                el = self.driver.find_element(By.ID, value)
-            elif locate_type == 'name':
-                el = self.driver.find_element(By.NAME, value)
-            elif locate_type == 'class':
-                el = self.driver.find_element(By.CLASS_NAME, value)
-            elif locate_type == 'xpath':
-                el = self.driver.find_element(By.XPATH, value)
-            elif locate_type == 'tag':
-                el = self.driver.find_element(By.TAG_NAME, value)
-            elif locate_type == 'css':
-                el = self.driver.find_element(By.CSS_SELECTOR, value)
-            elif locate_type == 'text':
-                el = self.driver.find_element(By.LINK_TEXT, value)
-            elif locate_type == 'partial':
-                el = self.driver.find_element(By.PARTIAL_LINK_TEXT, value)
-            elif locate_type == 'selector':
-                el = self.driver.find_element(By.CSS_SELECTOR, value)
-            if el is not None:
-                return el
-        except:
-            logging.Logger.info("未获取到该元素")
-            raise  # 抛出异常
+            self.logger.info("开始等待页面元素<{}>是否存在！".format(locator))
+            el = WebDriverWait(self.driver, timeout, frequency).until(EC.presence_of_element_located(locator))
+            return el
+        except Exception as e:
+            self.logger.error("页面元素<{}>等待可见失败！".format(locator))
+            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            raise e  # 抛出异常
 
-    def find_elements(self, locate_type, value):
+    def click(self, locator, img_doc):
         """
-        定位多元素方法[列表元素]list类型
-        :param locate_type: 定位类型 如: id,name,xpath
-        :param value: 元素地址
-        :return: 返回一个list类型的元素  需要变量名+[]进行使用
+        点击按钮
+        :param locator: 元素定位的XPATH元组表达式
+        :param img_doc: 截图说明
+        :return:
         """
-        el = None
         try:
-            if locate_type == 'id':
-                el = self.driver.find_elements(By.ID, value)
-            elif locate_type == 'name':
-                el = self.driver.find_elements(By.NAME, value)
-            elif locate_type == 'class':
-                el = self.driver.find_elements(By.CLASS_NAME, value)
-            elif locate_type == 'xpath':
-                el = self.driver.find_elements(By.XPATH, value)
-            elif locate_type == 'tag':
-                el = self.driver.find_elements(By.TAG_NAME, value)
-            elif locate_type == 'css':
-                el = self.driver.find_elements(By.CSS_SELECTOR, value)
-            elif locate_type == 'text':
-                el = self.driver.find_elements(By.LINK_TEXT, value)
-            elif locate_type == 'partial':
-                el = self.driver.find_elements(By.PARTIAL_LINK_TEXT, value)
-            elif locate_type == 'selector':
-                el = self.driver.find_elements(By.CSS_SELECTOR, value)
-            if el is not None:
-                return el
-        except:
-            logging.Logger.info("未获取到该元素")
-            raise  # 抛出异常
+            self.logger.info("在{}中点击元素<{}>".format(img_doc, locator))
+            el = self.find_element(locator, img_doc)
+            el.click()
+        except Exception as e:
+            self.logger.error("在{}中点击元素<{}>失败！".format(img_doc, locator))
+            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            raise e  # 抛出异常
 
-    def click(self, locate_type, value):
+    def input_data(self, locator, img_doc, text):
         """
-        调用封装的单元素定位方法find_element进行点击操作
-        :param locate_type: 元素方式
-        :param value: 元素地址
-        """
-        el = self.find_element(locate_type, value)
-        el.click()
+        对输入框输入文本内容
+        :param text: 输入的文本内容
+        :param locator: 元素定位的XPATH元组表达式
+        :param img_doc: 截图说明
+        :return:
+       """
+        try:
+            self.logger.info("在{}中输入元素<{}>的内容为{}: ".format(img_doc, locator, text))
+            el = self.find_element(locator, img_doc)
+            el.send_keys(text)
+        except Exception as e:
+            self.logger.error("在元素<{}>中输入内容{}失败！".format(locator, text))
+            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            raise e  # 抛出异常
 
-    def input_data(self, locate_type, value, data):
+    def get_text(self, locator, img_doc):
         """
-        调用封装的单元素定位方法find_element进行输入操作
-        :param locate_type: 元素方式
-        :param value: 元素地址
+        获取WebElement对象的文本值
+        :param locator: 元素定位的XPATH元组表达式
+        :param img_doc: 截图说明
+        :return: WebElement对象的文本值
         """
-        el = self.find_element(locate_type, value)
-        el.send_keys(data)
+        try:
+            self.logger.info("在{}中获取元素<{}>的文本值".format(img_doc, locator))
+            el = self.find_element(locator)
+            return el.text
+        except Exception as e:
+            self.logger.error("在{}中获取元素<{}>的文本值失败！".format(img_doc, locator))
+            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            raise e  # 抛出异常
 
-    def get_text(self, locate_type, value):
+    def get_attribute(self, locator, img_doc, attr_name):
         """
-        调用封装的单元素定位方法find_element进行获取文本内容操作
-        :param locate_type: 元素方式
-        :param value: 元素地址
+        获取WebElement对象的属性值
+        :param locator: 元素定位的XPATH元组表达式
+        :param img_doc: 截图说明
+        :param attr_name: 属性名称
+        :return: WebElement对象的属性值
         """
-        el = self.find_element(locate_type, value)
-        return el.text
-
-    def get_attribute(self, locate_type, value, data):
-        """
-        调用封装的单元素定位方法find_element进行获取元素属性操作
-        :param locate_type: 元素方式
-        :param value: 元素地址
-        """
-        el = self.find_element(locate_type, value)
-        return el.get_attribute(data)
+        try:
+            self.logger.info("在{}中获取元素<{}>的属性{}的值".format(img_doc, locator, attr_name))
+            el = self.find_element(locator)
+            return el.get_attribute(attr_name)
+        except Exception as e:
+            self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, locator, attr_name))
+            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            raise e  # 抛出异常
