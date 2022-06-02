@@ -9,8 +9,6 @@
 
 from appium import webdriver
 
-from page.login_page import LoginPage
-
 
 class AppStart:
     # 声明driver对象
@@ -22,16 +20,17 @@ class AppStart:
         caps = {
             "platformName": "Android",
             "deviceName": "U4AIUKFAL7W4MJLR",
-            "platforVersion": "9",
-            "appPackage": "com.sina.weibo",
-            "appActivity": "com.sina.weibo.SplashActivity",
+            "platforVersion": "10",
+            "appPackage": "com.mimu.mshop",
+            "appActivity": ".ui.login.LoginActivity",
             "autoGrantPermissions": "true",
-            "automationName": "UiAutomator2"
+            "automationName": "UiAutomator2",
+            'noReset': True,  # 不要重置App
         }
 
         cls.driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
         cls.driver.implicitly_wait(20)
-        return LoginPage(cls.driver)
+        return cls.driver
 
     # 退出app
     @classmethod
