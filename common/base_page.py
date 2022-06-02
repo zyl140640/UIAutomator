@@ -86,3 +86,39 @@ class BasePage:
         except:
             logging.Logger.info("未获取到该元素")
             raise  # 抛出异常
+
+    def click(self, locate_type, value):
+        """
+        调用封装的单元素定位方法find_element进行点击操作
+        :param locate_type: 元素方式
+        :param value: 元素地址
+        """
+        el = self.find_element(locate_type, value)
+        el.click()
+
+    def input_data(self, locate_type, value, data):
+        """
+        调用封装的单元素定位方法find_element进行输入操作
+        :param locate_type: 元素方式
+        :param value: 元素地址
+        """
+        el = self.find_element(locate_type, value)
+        el.send_keys(data)
+
+    def get_text(self, locate_type, value):
+        """
+        调用封装的单元素定位方法find_element进行获取文本内容操作
+        :param locate_type: 元素方式
+        :param value: 元素地址
+        """
+        el = self.find_element(locate_type, value)
+        return el.text
+
+    def get_attribute(self, locate_type, value, data):
+        """
+        调用封装的单元素定位方法find_element进行获取元素属性操作
+        :param locate_type: 元素方式
+        :param value: 元素地址
+        """
+        el = self.find_element(locate_type, value)
+        return el.get_attribute(data)

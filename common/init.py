@@ -25,6 +25,7 @@ class AppStart:
             "appActivity": ".ui.login.LoginActivity",
             "autoGrantPermissions": "true",
             "automationName": "UiAutomator2",
+            "udid": "",
             'noReset': True,  # 不要重置App
         }
 
