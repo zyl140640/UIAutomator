@@ -1,6 +1,7 @@
 phone_number_input_box:
   type: By.CLASS_NAME
-  kuohoa: By.ID, "com.mimu.mshop:id/et_ordinary_phone"
+  kuohoa:
+    By.ID: com.mimu.mshop:id/cb_register
   path: android.widget.EditText
   right_phone_number:
   wrong_phone_number:

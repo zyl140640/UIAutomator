@@ -6,11 +6,9 @@
 @file: run.py
 @desc: 
 """
-import time
 
 from common.init import AppStart
 from page.login_page import LoginPage
-from page.shop_page import ShopPage
 
 
 class TestRun:
@@ -19,10 +17,8 @@ class TestRun:
 
     def test_name(self):
         login = LoginPage(self.names)
-        login.enter_iphone()
-        time.sleep(3)
-        shop = ShopPage(self.names)
-        shop.shop_iphone()
+        # login.login()
+        login.name()
 
     def teardown(self):
         AppStart.quit()
