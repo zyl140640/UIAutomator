@@ -26,7 +26,7 @@ class BasePage:
     def find_element(self, locate_type, value, img_doc, timeout=10, frequency=0.5):
         """
         检测定位元素是否存在
-        :param locate_type: 定位方式
+        :param locate_type: 元素定位方式
         :param value:  页面元素路径
         :param img_doc: 截图说明
         :param timeout: 等待的超时时间
@@ -34,14 +34,25 @@ class BasePage:
         :return:  WebElement元素地址
         """
         try:
+            el = None
             self.logger.info("开始等待页面元素<{},{}>是否存在！".format(locate_type, value))
             wait = WebDriverWait(self.driver, timeout, frequency)
-            # el = wait.until(EC.presence_of_element_located(locator))
             if locate_type == 'id':
                 el = wait.until(lambda diver: self.driver.find_element(By.ID, value), message='没找到该元素')
             elif locate_type == 'xpath':
                 el = wait.until(lambda diver: self.driver.find_element(By.XPATH, value), message='没找到该元素')
-            return el
+            elif locate_type == 'name':
+                el = wait.until(lambda diver: self.driver.find_element(By.NAME, value), message='没找到该元素')
+            elif locate_type == 'css_selector':
+                el = wait.until(lambda diver: self.driver.find_element(By.CSS_SELECTOR, value), message='没找到该元素')
+            elif locate_type == 'tag_name':
+                el = wait.until(lambda diver: self.driver.find_element(By.TAG_NAME, value), message='没找到该元素')
+            elif locate_type == 'partial_link_text':
+                el = wait.until(lambda diver: self.driver.find_element(By.PARTIAL_LINK_TEXT, value), message='没找到该元素')
+            elif locate_type == 'link_text':
+                el = wait.until(lambda diver: self.driver.find_element(By.LINK_TEXT, value), message='没找到该元素')
+            if el is not None:
+                return el
         except Exception as e:
             self.logger.error("页面元素<{}>等待可见失败！".format(locate_type))
             self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
@@ -50,8 +61,8 @@ class BasePage:
     def click(self, locate_type, value, img_doc):
         """
         点击按钮
-        :param value:
-        :param locate_type:
+        :param value: 页面元素路径
+        :param locate_type:  元素定位方式
         :param img_doc: 截图说明
         :return:
         """
@@ -67,6 +78,8 @@ class BasePage:
     def input_data(self, locate_type, value, img_doc, text):
         """
         对输入框输入文本内容
+        :param value: 页面元素路径
+        :param locate_type: 元素定位方式
         :param text: 输入的文本内容
         :param img_doc: 截图说明
         :return:
@@ -83,6 +96,8 @@ class BasePage:
     def assert_text(self, locate_type, value, img_doc, expect_text):
         """
         获取WebElement对象的文本值
+        :param value: 页面元素路径
+        :param locate_type: 元素定位方式
         :param expect_text: 预期文本
         :param img_doc: 截图说明
         :return: WebElement对象的文本值
@@ -122,4 +137,3 @@ class BasePage:
     #     size = self.driver.get_window_size()
     #     self.logger.info("屏幕宽度: {},屏幕高度: {}".format(size['width'], size['height']))
     #     return size
-
