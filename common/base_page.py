@@ -108,3 +108,12 @@ class BasePage:
             self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, locator, attr_name))
             self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
             raise e  # 抛出异常
+
+    def get_size(self):
+        """
+        获取界面大小
+        :return: 返回界面大小
+        """
+        size = self.driver.get_window_size()
+        self.logger.info("屏幕宽度: {},屏幕高度: {}".format(size['width'], size['height']))
+        return size
