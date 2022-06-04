@@ -74,16 +74,18 @@ class BasePage:
             self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
             raise e  # 抛出异常
 
-    def get_text(self, locator, img_doc):
+    def assert_text(self, locator, img_doc, expect_text):
         """
         获取WebElement对象的文本值
+        :param expect_text: 预期文本
         :param locator: 元素定位的XPATH元组表达式
         :param img_doc: 截图说明
         :return: WebElement对象的文本值
         """
         try:
             self.logger.info("在{}中获取元素<{}>的文本值".format(img_doc, locator))
-            el = self.find_element(locator)
+            el = self.find_element(locator, img_doc)
+            assert el.text == expect_text
             return el.text
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的文本值失败！".format(img_doc, locator))
@@ -100,7 +102,7 @@ class BasePage:
         """
         try:
             self.logger.info("在{}中获取元素<{}>的属性{}的值".format(img_doc, locator, attr_name))
-            el = self.find_element(locator)
+            el = self.find_element(locator, img_doc)
             return el.get_attribute(attr_name)
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, locator, attr_name))
