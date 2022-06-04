@@ -1,0 +1,15 @@
+phone_number_input_box:
+  type: By.CLASS_NAME
+  kuohoa: By.ID, "com.mimu.mshop:id/et_ordinary_phone"
+  path: android.widget.EditText
+  right_phone_number:
+  wrong_phone_number:
+    - val1: 199635432111
+      warning: 手机号格式错误
+    - val2: 17834
+      warning: 手机号格式错误
+
+
+
+
+
