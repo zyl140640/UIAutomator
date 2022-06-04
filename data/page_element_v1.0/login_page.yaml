@@ -1,8 +1,9 @@
 phone_number_input_box:
-  type: class_name
+  locate_type: class_name
   kuohoa:
     By.ID: com.mimu.mshop:id/cb_register
   path: android.widget.EditText
+  img_doc: 输入手机号码
   right_phone_number:
   wrong_phone_number:
     - val1: 199635432111
