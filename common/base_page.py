@@ -112,28 +112,29 @@ class BasePage:
             self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
             raise e  # 抛出异常
 
-    # def get_attribute(self, locator, img_doc, attr_name):
-    #     """
-    #     获取WebElement对象的属性值
-    #     :param locator: 元素定位的XPATH元组表达式
-    #     :param img_doc: 截图说明
-    #     :param attr_name: 属性名称
-    #     :return: WebElement对象的属性值
-    #     """
-    #     try:
-    #         self.logger.info("在{}中获取元素<{}>的属性{}的值".format(img_doc, locator, attr_name))
-    #         el = self.find_element(locator, img_doc)
-    #         return el.get_attribute(attr_name)
-    #     except Exception as e:
-    #         self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, locator, attr_name))
-    #         self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
-    #         raise e  # 抛出异常
-    #
-    # def get_size(self):
-    #     """
-    #     获取界面大小
-    #     :return: 返回界面大小
-    #     """
-    #     size = self.driver.get_window_size()
-    #     self.logger.info("屏幕宽度: {},屏幕高度: {}".format(size['width'], size['height']))
-    #     return size
+    def get_attribute(self, locate_type, value, img_doc, attr_name):
+        """
+        获取WebElement对象的属性值
+        :param value: 页面元素路径
+        :param locate_type: 元素定位方式
+        :param img_doc: 截图说明
+        :param attr_name: 属性名称
+        :return: WebElement对象的属性值
+        """
+        try:
+            self.logger.info("在{}中获取元素<{}>的属性{}的值".format(img_doc,  attr_name, value))
+            el = self.find_element(locate_type, value, img_doc)
+            return el.get_attribute(attr_name)
+        except Exception as e:
+            self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, attr_name, value))
+            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            raise e  # 抛出异常
+
+    def get_size(self):
+        """
+        获取界面大小
+        :return: 返回界面大小
+        """
+        size = self.driver.get_window_size()
+        self.logger.info("屏幕宽度: {},屏幕高度: {}".format(size['width'], size['height']))
+        return size
