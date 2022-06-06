@@ -11,6 +11,7 @@ import os
 
 import yaml
 
+
 # 该path为config/config.yaml
 def get_object_path(path):
     """
@@ -19,6 +20,7 @@ def get_object_path(path):
     :return: 根目录+路径
     """
     return os.getcwd() + '/' + path
+
 
 # 读取文件单独参数
 def read_yaml_key(path, key):
