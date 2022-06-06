@@ -7,8 +7,8 @@
 @desc: 基础类，封装元素定位操作
 
 """
-import datetime
 import logging
+
 import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -58,7 +58,9 @@ class BasePage:
                 return el
         except Exception as e:
             self.logger.error("页面元素<{}>等待可见失败！".format(locate_type))
-            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            with allure.step("添加失败截图"):
+                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
     def click(self, locate_type, value, img_doc):
@@ -75,7 +77,6 @@ class BasePage:
             el.click()
         except Exception as e:
             self.logger.error("在{}中点击元素<{}>失败！".format(img_doc, locate_type))
-            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
             with allure.step("添加失败截图"):
                 file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
                 allure.attach(file, img_doc, allure.attachment_type.PNG)
@@ -96,7 +97,6 @@ class BasePage:
             el.send_keys(text)
         except Exception as e:
             self.logger.error("在元素<{}>中输入内容{}失败！".format(locate_type, text))
-            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
             with allure.step("添加失败截图"):
                 file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
                 allure.attach(file, img_doc, allure.attachment_type.PNG)
@@ -118,7 +118,6 @@ class BasePage:
             return el.text
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的文本值失败！".format(img_doc, locate_type))
-            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
             with allure.step("添加失败截图"):
                 file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
                 allure.attach(file, img_doc, allure.attachment_type.PNG)
@@ -139,7 +138,6 @@ class BasePage:
             return el.get_attribute(attr_name)
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, attr_name, value))
-            self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
             with allure.step("添加失败截图"):
                 file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
                 allure.attach(file, img_doc, allure.attachment_type.PNG)

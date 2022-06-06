@@ -6,27 +6,21 @@
 @file: run.py
 @desc: 
 """
-import time
 
-import allure
-
-from common.init import AppStart
-from page.login_page import LoginPage
-from page.shop_page import ShopPage
+from common.appium_init import AppStart
+from page.login_password import LoginPasswordPage
 
 
-@allure.feature("登录")
-@allure.story("登录")
 class TestRun:
-    def setup(self):
-        self.names = AppStart.start()
+    def setup_class(self):
+        self.app = AppStart.start()
+        self.login = LoginPasswordPage(self.app)
 
     def test_name(self):
-        login = LoginPage(self.names)
-        login.enter_iphone()
-        # time.sleep(3)
-        # shop = ShopPage(self.names)
-        # shop.shop_iphone()
+        self.login.login_password(15533065391, 123456)
 
-    def teardown(self):
+    def teardown_class(self):
+        """
+         类后置 执行退出操作
+        """
         AppStart.quit()

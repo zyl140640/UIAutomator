@@ -10,7 +10,7 @@
 from common.base_page import BasePage
 
 
-class LoginPage(BasePage):
+class LoginPasswordPage(BasePage):
 
     def input_login_password(self, account, password):
         """
