@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from common.init import AppStart
+from common.appium_init import AppStart
 
 if __name__ == '__main__':
     # cc = AppStart.start()
