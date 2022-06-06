@@ -7,8 +7,9 @@
 @desc: 基础类，封装元素定位操作
 
 """
+import datetime
 import logging
-
+import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
@@ -75,6 +76,9 @@ class BasePage:
         except Exception as e:
             self.logger.error("在{}中点击元素<{}>失败！".format(img_doc, locate_type))
             self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            with allure.step("添加失败截图"):
+                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
     def input_data(self, locate_type, value, img_doc, text):
@@ -93,6 +97,9 @@ class BasePage:
         except Exception as e:
             self.logger.error("在元素<{}>中输入内容{}失败！".format(locate_type, text))
             self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            with allure.step("添加失败截图"):
+                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
     def assert_text(self, locate_type, value, img_doc, expect_text):
@@ -112,6 +119,9 @@ class BasePage:
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的文本值失败！".format(img_doc, locate_type))
             self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            with allure.step("添加失败截图"):
+                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
     def get_attribute(self, locate_type, value, img_doc, attr_name):
@@ -124,12 +134,15 @@ class BasePage:
         :return: WebElement对象的属性值
         """
         try:
-            self.logger.info("在{}中获取元素<{}>的属性{}的值".format(img_doc,  attr_name, value))
+            self.logger.info("在{}中获取元素<{}>的属性{}的值".format(img_doc, attr_name, value))
             el = self.find_element(locate_type, value, img_doc)
             return el.get_attribute(attr_name)
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, attr_name, value))
             self.driver.save_screenshot("screenshots/{}.png".format(img_doc))
+            with allure.step("添加失败截图"):
+                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
     def get_size(self):
