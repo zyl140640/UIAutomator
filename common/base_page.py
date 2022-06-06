@@ -51,6 +51,8 @@ class BasePage:
                 el = wait.until(lambda diver: self.driver.find_element(By.PARTIAL_LINK_TEXT, value), message='没找到该元素')
             elif locate_type == 'link_text':
                 el = wait.until(lambda diver: self.driver.find_element(By.LINK_TEXT, value), message='没找到该元素')
+            elif locate_type == 'class_name':
+                el = wait.until(lambda diver: self.driver.find_element(By.CLASS_NAME, value), message='没找到该元素')
             if el is not None:
                 return el
         except Exception as e:
