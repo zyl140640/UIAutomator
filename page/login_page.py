@@ -17,7 +17,7 @@ class LoginPasswordPage(BasePage):
         登录页面的手机号码输入框
         :param account: 手机号码
         """
-        self.input_data("id", "com.mimu.mshop:id/et_ordinary_phone", "输入手机号码", account)
+        self.input_data("id", "com.mimu.mshop:id/et_ordinary_phones", "输入手机号码", account)
 
     def input_password(self, password):
         """

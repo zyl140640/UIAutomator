@@ -58,7 +58,7 @@ class BasePage:
             self.logger.info("<{}>,<{}>定位成功".format(img_doc, value))
         except Exception as e:
             self.logger.error("<{}>页面元素<{}>定位失败！异常内容: <{}>".format(img_doc, value, e))
-            self.add_allure_attach(img_doc)
+            raise e
 
     def click(self, locate_type, value, img_doc):
         """
@@ -75,6 +75,7 @@ class BasePage:
         except Exception as e:
             self.logger.error("<{}>中,点击元素<{}>失败,异常内容: <{}>".format(img_doc, value, e))
             self.add_allure_attach(img_doc)
+            raise e
 
     def input_data(self, locate_type, value, img_doc, text):
         """
@@ -92,6 +93,7 @@ class BasePage:
         except Exception as e:
             self.logger.error("在元素<{}>中输入内容{}失败！,异常内容: <{}>".format(locate_type, text, e))
             self.add_allure_attach(img_doc)
+            raise e
 
     def assert_text(self, locate_type, value, img_doc, expect_text):
         """
@@ -110,6 +112,7 @@ class BasePage:
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的文本值失败！,异常内容: <{}>".format(img_doc, locate_type, e))
             self.add_allure_attach(img_doc)
+            raise e
 
     def get_attribute(self, locate_type, value, img_doc, attr_name):
         """
@@ -127,6 +130,7 @@ class BasePage:
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的属性{}的值失败！,异常内容: <{}>".format(img_doc, attr_name, value, e))
             self.add_allure_attach(img_doc)
+            raise e
 
     def get_size(self):
         """
