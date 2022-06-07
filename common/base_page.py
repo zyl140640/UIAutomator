@@ -59,7 +59,7 @@ class BasePage:
         except Exception as e:
             self.logger.error("页面元素<{}>等待可见失败！".format(locate_type))
             with allure.step("添加失败截图"):
-                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                file = self.driver.get_screenshot_as_png() 
                 allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
@@ -78,7 +78,7 @@ class BasePage:
         except Exception as e:
             self.logger.error("在{}中点击元素<{}>失败！".format(img_doc, locate_type))
             with allure.step("添加失败截图"):
-                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                file = self.driver.get_screenshot_as_png() 
                 allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
@@ -98,7 +98,7 @@ class BasePage:
         except Exception as e:
             self.logger.error("在元素<{}>中输入内容{}失败！".format(locate_type, text))
             with allure.step("添加失败截图"):
-                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                file = self.driver.get_screenshot_as_png() 
                 allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
@@ -114,12 +114,12 @@ class BasePage:
         try:
             self.logger.info("在{}中获取元素<{}>的文本值".format(img_doc, locate_type))
             el = self.find_element(locate_type, value, img_doc)
-            assert el.text == expect_text
+            assert el.text == expect_text, "{}断言失败".format(img_doc)
             return el.text
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的文本值失败！".format(img_doc, locate_type))
             with allure.step("添加失败截图"):
-                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                file = self.driver.get_screenshot_as_png() 
                 allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
@@ -139,7 +139,7 @@ class BasePage:
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, attr_name, value))
             with allure.step("添加失败截图"):
-                file = open("screenshots/{}.png".format(img_doc), mode='rb').read()
+                file = self.driver.get_screenshot_as_png() 
                 allure.attach(file, img_doc, allure.attachment_type.PNG)
             raise e  # 抛出异常
 
