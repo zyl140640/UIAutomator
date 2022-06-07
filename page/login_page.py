@@ -17,7 +17,7 @@ class LoginPasswordPage(BasePage):
         登录页面的手机号码输入框
         :param account: 手机号码
         """
-        self.input_data("id", "com.mimu.mshop:id/et_ordinary_phones", "输入手机号码", account)
+        self.input_data("id", "com.mimu.mshop:id/et_ordinary_phone", "输入手机号码", account)
 
     def input_password(self, password):
         """
@@ -26,9 +26,9 @@ class LoginPasswordPage(BasePage):
         """
         self.input_data("id", "com.mimu.mshop:id/et_login_pwd", "输入密码", password)
 
-    def login_password_button(self):
+    def login_button(self):
         """
-        密码登录页面的登录按钮
+        密码登录页面的登录按钮/手机号验证码登录页面的发送验证码
         """
         self.click("id", "com.mimu.mshop:id/btn_reg_send", "登录")
 
@@ -52,10 +52,28 @@ class LoginPasswordPage(BasePage):
         """
         self.input_account(account)
         self.input_password(password)
-        self.login_password_button()
+        self.login_button()
 
     def user_agreement_single_box(self):
         """
         手机号登录页面的用户协议按钮
         """
         self.click("id", "com.mimu.mshop:id/cb_register", "点击用户勾选协议")
+
+    def qq_login(self):
+        """
+        其他方式登录-QQ登录
+        """
+        self.click("id", "com.mimu.mshop:id/img_qq", "QQ登录")
+
+    def wechat_login(self):
+        """
+        其他方式登录-微信登录
+        """
+        self.click("id", "com.mimu.mshop:id/img_wx", "微信登录")
+
+    def zfb_login(self):
+        """
+        其他方式登录-支付宝登录
+        """
+        self.click("id", "com.mimu.mshop:id/img_zfb", "支付宝登录")

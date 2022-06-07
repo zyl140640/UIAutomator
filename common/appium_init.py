@@ -22,7 +22,7 @@ class AppStart:
             "deviceName": "U4AIUKFAL7W4MJLR",
             "platforVersion": "10",
             "appPackage": "com.mimu.mshop",
-            "appActivity": ".ui.login.LoginActivity",
+            "appActivity": "com.mimu.mshop.ui.SplashActivity",
             "autoGrantPermissions": "true",
             "automationName": "UiAutomator2",
             "udid": "",
@@ -30,7 +30,7 @@ class AppStart:
         }
 
         cls.driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
-        cls.driver.implicitly_wait(20)
+        cls.driver.implicitly_wait(30)
         return cls.driver
 
     # 退出app

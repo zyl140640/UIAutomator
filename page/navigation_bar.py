@@ -9,14 +9,13 @@
 from common.base_page import BasePage
 
 
-class Navigation_Bar(BasePage):
+class NavigationBarPage(BasePage):
 
     def main(self):
         """
         点击底部导航栏首页
         """
         self.click('id', 'com.mimu.mshop:id/navigation_bar_item_large_label_view', '底部导航栏-首页')
-
 
     def category(self):
         """
@@ -40,6 +39,4 @@ class Navigation_Bar(BasePage):
         """
         点击底部导航栏我的
         """
-        self.click('xpath', '//android.widget.FrameLayout[@content-desc="我的"]/android.view.ViewGroup/android.widget.TextView', '底部导航栏-我的')
-
-
+        self.click('xpath', '//android.widget.FrameLayout[@content-desc="我的"]', '底部导航栏-我的')
