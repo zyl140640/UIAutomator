@@ -4,23 +4,58 @@
 @contact: zyl140640@163.com
 @time: 2022/6/1 17:45
 @file: login_page.py
-@desc: 
+@desc: 密码登录页面的操作元素封装
 """
-import time
-import logging
-from selenium.webdriver.common.by import By
 
 from common.base_page import BasePage
-from common.yaml_util import read_yaml_key
 
 
-class LoginPage(BasePage):
+class LoginPasswordPage(BasePage):
 
-    def enter_iphone(self):
-        el = read_yaml_key('data/page_element_v1.0/login_page.yaml', 'phone_number_input_box')
-        self.assert_text(el['locate_type'], el['path'], el['img_doc'], "输入您的手机号注册或登陆l")
-        self.input_data(el['locate_type'], el['path'], el['img_doc'], "15533065391")
-        #
-        # time.sleep(2)
-        # self.click((By.ID, "com.mimu.mshop:id/cb_register"), "勾选用户协议")
-        time.sleep(5)
+    def input_account(self, account):
+        """
+        登录页面的手机号码输入框
+        :param account: 手机号码
+        """
+        self.input_data("id", "com.mimu.mshop:id/et_ordinary_phone", "输入手机号码", account)
+
+    def input_password(self, password):
+        """
+        登录页面的密码输入框
+        :param password: 密码
+        """
+        self.input_data("id", "com.mimu.mshop:id/et_login_pwd", "输入密码", password)
+
+    def login_password_button(self):
+        """
+        密码登录页面的登录按钮
+        """
+        self.click("id", "com.mimu.mshop:id/btn_reg_send", "登录")
+
+    def toggle_captcha_password_button(self):
+        """
+        切换至验证码登录或验证码登录的按钮
+        """
+        self.click("id", "com.mimu.mshop:id/menu_msg", "切换到验证码登录页面")
+
+    def forget_password_button(self):
+        """
+        密码登录页面的忘记密码按钮
+        """
+        self.click("id", "com.mimu.mshop:id/tv_login_forget", "切换到验证码登录页面")
+
+    def login_password(self, account, password):
+        """
+        手机号+密码登录流程
+        :param account: 手机号码
+        :param password:密码
+        """
+        self.input_account(account)
+        self.input_password(password)
+        self.login_password_button()
+
+    def user_agreement_single_box(self):
+        """
+        手机号登录页面的用户协议按钮
+        """
+        self.click("id", "com.mimu.mshop:id/cb_register", "点击用户勾选协议")

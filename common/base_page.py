@@ -16,22 +16,13 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 
 class BasePage:
-    # 初始化，定义driver的类型为WebDriver
     def __init__(self, driver: WebDriver):
         """
+        初始化，定义driver的类型为WebDriver
         :param driver: web驱动器
         """
         self.driver = driver
         self.logger = logging
-
-    def add_allure_attach(self, img_doc):
-        """
-        allure 报告中添加失败截图附件
-        :param img_doc: 截图说明
-        """
-        with allure.step("添加失败截图"):
-            file = self.driver.get_screenshot_as_png()
-            allure.attach(file, img_doc, allure.attachment_type.PNG)
 
     def find_element(self, locate_type, value, img_doc, timeout=10, frequency=0.5):
         """
@@ -45,7 +36,6 @@ class BasePage:
         """
         try:
             el = None
-            self.logger.info("开始等待页面元素<{},{}>是否存在！".format(locate_type, value))
             wait = WebDriverWait(self.driver, timeout, frequency)
             if locate_type == 'id':
                 el = wait.until(lambda diver: self.driver.find_element(By.ID, value), message='没找到该元素')
@@ -65,10 +55,10 @@ class BasePage:
                 el = wait.until(lambda diver: self.driver.find_element(By.CLASS_NAME, value), message='没找到该元素')
             if el is not None:
                 return el
+            self.logger.info("<{}>,<{}>定位成功".format(img_doc, value))
         except Exception as e:
-            self.logger.error("页面元素<{}>等待可见失败！".format(locate_type))
+            self.logger.error("<{}>页面元素<{}>定位失败！异常内容: <{}>".format(img_doc, value, e))
             self.add_allure_attach(img_doc)
-            raise e  # 抛出异常
 
     def click(self, locate_type, value, img_doc):
         """
@@ -79,13 +69,12 @@ class BasePage:
         :return:
         """
         try:
-            self.logger.info("在{}中点击元素<{}>".format(img_doc, locate_type))
             el = self.find_element(locate_type, value, img_doc)
             el.click()
+            self.logger.info("在<{}>中,点击元素<{}>成功".format(img_doc, value))
         except Exception as e:
-            self.logger.error("在{}中点击元素<{}>失败！".format(img_doc, locate_type))
+            self.logger.error("<{}>中,点击元素<{}>失败,异常内容: <{}>".format(img_doc, value, e))
             self.add_allure_attach(img_doc)
-            raise e  # 抛出异常
 
     def input_data(self, locate_type, value, img_doc, text):
         """
@@ -97,13 +86,12 @@ class BasePage:
         :return:
        """
         try:
-            self.logger.info("在{}中输入元素<{}>的内容为{}: ".format(img_doc, locate_type, text))
             el = self.find_element(locate_type, value, img_doc)
+            self.logger.info("在<{}>功能的<{}>元素中输入内容为{}: ".format(img_doc, value, text))
             el.send_keys(text)
         except Exception as e:
-            self.logger.error("在元素<{}>中输入内容{}失败！".format(locate_type, text))
+            self.logger.error("在元素<{}>中输入内容{}失败！,异常内容: <{}>".format(locate_type, text, e))
             self.add_allure_attach(img_doc)
-            raise e  # 抛出异常
 
     def assert_text(self, locate_type, value, img_doc, expect_text):
         """
@@ -120,9 +108,8 @@ class BasePage:
             assert el.text == expect_text, "{}断言失败".format(img_doc)
             return el.text
         except Exception as e:
-            self.logger.error("在{}中获取元素<{}>的文本值失败！".format(img_doc, locate_type))
+            self.logger.error("在{}中获取元素<{}>的文本值失败！,异常内容: <{}>".format(img_doc, locate_type, e))
             self.add_allure_attach(img_doc)
-            raise e  # 抛出异常
 
     def get_attribute(self, locate_type, value, img_doc, attr_name):
         """
@@ -134,13 +121,12 @@ class BasePage:
         :return: WebElement对象的属性值
         """
         try:
-            self.logger.info("在{}中获取元素<{}>的属性{}的值".format(img_doc, attr_name, value))
             el = self.find_element(locate_type, value, img_doc)
+            self.logger.info("成功获取<{}>元素<{}>属性{}的值".format(img_doc, attr_name, value))
             return el.get_attribute(attr_name)
         except Exception as e:
-            self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, attr_name, value))
+            self.logger.error("在{}中获取元素<{}>的属性{}的值失败！,异常内容: <{}>".format(img_doc, attr_name, value, e))
             self.add_allure_attach(img_doc)
-            raise e  # 抛出异常
 
     def get_size(self):
         """
@@ -150,3 +136,12 @@ class BasePage:
         size = self.driver.get_window_size()
         self.logger.info("屏幕宽度: {},屏幕高度: {}".format(size['width'], size['height']))
         return size
+
+    def add_allure_attach(self, img_doc):
+        """
+        allure 报告中添加失败截图附件
+        :param img_doc: 截图说明
+        """
+        with allure.step("添加失败截图"):
+            file = self.driver.get_screenshot_as_png()
+            allure.attach(file, img_doc, allure.attachment_type.PNG)
