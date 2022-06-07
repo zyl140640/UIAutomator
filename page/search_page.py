@@ -17,6 +17,14 @@ class Search(BasePage):
         self.click("id", "com.mimu.mshop:id/img_search", "搜索图标")
 
 
+    def scan(self):
+        """
+        扫一扫
+        """
+        self.tap_search_icon()
+        self.click("id", "com.mimu.mshop:id/iv_scan", "扫一扫")
+
+
     def search(self, keyword):
         """
         输入关键字搜索
@@ -31,5 +39,33 @@ class Search(BasePage):
         历史记录搜索
         """
         self.tap_search_icon()
-        self.click("xpath", "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout[1]/android.widget.RelativeLayout[2]/androidx.recyclerview.widget.RecyclerView/android.widget.LinearLayout[2]/android.widget.TextView", "历史记录")
+        self.click("xpath",
+                   "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout[1]/android.widget.RelativeLayout[2]/androidx.recyclerview.widget.RecyclerView/android.widget.LinearLayout[1]/android.widget.TextView",
+                   "历史记录")
+
+    def delete_history(self):
+        """
+        删除历史搜索记录
+        """
+        self.tap_search_icon()
+        self.click("id", "com.mimu.mshop:id/iv_delete_history", "历史记录")
+        el = self.get_attribute("id", "com.mimu.mshop:id/tv_history_empty", "删除历史搜索记录", "text")
+        return el
+
+    def hot_search(self):
+        """
+        热门搜索
+        """
+        self.tap_search_icon()
+        self.click("xpath",
+                   "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout[2]/android.widget.RelativeLayout[2]/androidx.recyclerview.widget.RecyclerView/android.widget.LinearLayout[1]/android.widget.TextView",
+                   "热门搜索")
+
+    def refresh_hot_search(self):
+        """
+        热门搜索
+        """
+        self.tap_search_icon()
+        self.click("id", "com.mimu.mshop:id/tv_refresh", "换一换")
+
 

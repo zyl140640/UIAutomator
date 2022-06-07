@@ -15,28 +15,30 @@ class NavigationBarPage(BasePage):
         """
         点击底部导航栏首页
         """
-        self.click('id', 'com.mimu.mshop:id/navigation_bar_item_large_label_view', '底部导航栏-首页')
+        self.click('id', 'com.mimu.mshop:id/homeFragment', '底部导航栏-首页')
 
     def category(self):
         """
         点击底部导航栏分类
         """
-        self.click('xpath', '//android.widget.FrameLayout[@content-desc="分类"]/android.view.ViewGroup/android.widget.TextView', '底部导航栏-分类')
+        self.click('id', 'com.mimu.mshop:id/sortFragment', '底部导航栏-分类')
 
     def find(self):
         """
         点击底部导航栏发现
         """
-        self.click('xpath', '//android.widget.FrameLayout[@content-desc="发现"]/android.view.ViewGroup/android.widget.TextView', '底部导航栏-发现')
+        self.click('id', 'com.mimu.mshop:id/findFragment', '底部导航栏-发现')
 
     def cart(self):
         """
         点击底部导航栏购物车
         """
-        self.click('id', '//android.widget.FrameLayout[@content-desc="购物车"]/android.view.ViewGroup/android.widget.TextView', '底部导航栏-购物车')
+        self.click('id', 'com.mimu.mshop:id/shopFragment', '底部导航栏-购物车')
 
     def my(self):
         """
         点击底部导航栏我的
         """
-        self.click('xpath', '//android.widget.FrameLayout[@content-desc="我的"]', '底部导航栏-我的')
+        self.click('id', 'com.mimu.mshop:id/mineFragment', '底部导航栏-我的')
+
+
