@@ -16,6 +16,15 @@ class Search(BasePage):
         """
         self.click("id", "com.mimu.mshop:id/img_search", "搜索图标")
 
+
+    def scan(self):
+        """
+        扫一扫
+        """
+        self.tap_search_icon()
+        self.click("id", "com.mimu.mshop:id/iv_scan", "扫一扫")
+
+
     def search(self, keyword):
         """
         输入关键字搜索
@@ -58,3 +67,5 @@ class Search(BasePage):
         """
         self.tap_search_icon()
         self.click("id", "com.mimu.mshop:id/tv_refresh", "换一换")
+
+
