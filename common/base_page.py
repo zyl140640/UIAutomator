@@ -24,6 +24,15 @@ class BasePage:
         self.driver = driver
         self.logger = logging
 
+    def add_allure_attach(self, img_doc):
+        """
+        allure 报告中添加失败截图附件
+        :param img_doc: 截图说明
+        """
+        with allure.step("添加失败截图"):
+            file = self.driver.get_screenshot_as_png()
+            allure.attach(file, img_doc, allure.attachment_type.PNG)
+
     def find_element(self, locate_type, value, img_doc, timeout=10, frequency=0.5):
         """
         检测定位元素是否存在
@@ -58,9 +67,7 @@ class BasePage:
                 return el
         except Exception as e:
             self.logger.error("页面元素<{}>等待可见失败！".format(locate_type))
-            with allure.step("添加失败截图"):
-                file = self.driver.get_screenshot_as_png() 
-                allure.attach(file, img_doc, allure.attachment_type.PNG)
+            self.add_allure_attach(img_doc)
             raise e  # 抛出异常
 
     def click(self, locate_type, value, img_doc):
@@ -77,9 +84,7 @@ class BasePage:
             el.click()
         except Exception as e:
             self.logger.error("在{}中点击元素<{}>失败！".format(img_doc, locate_type))
-            with allure.step("添加失败截图"):
-                file = self.driver.get_screenshot_as_png() 
-                allure.attach(file, img_doc, allure.attachment_type.PNG)
+            self.add_allure_attach(img_doc)
             raise e  # 抛出异常
 
     def input_data(self, locate_type, value, img_doc, text):
@@ -97,9 +102,7 @@ class BasePage:
             el.send_keys(text)
         except Exception as e:
             self.logger.error("在元素<{}>中输入内容{}失败！".format(locate_type, text))
-            with allure.step("添加失败截图"):
-                file = self.driver.get_screenshot_as_png() 
-                allure.attach(file, img_doc, allure.attachment_type.PNG)
+            self.add_allure_attach(img_doc)
             raise e  # 抛出异常
 
     def assert_text(self, locate_type, value, img_doc, expect_text):
@@ -118,9 +121,7 @@ class BasePage:
             return el.text
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的文本值失败！".format(img_doc, locate_type))
-            with allure.step("添加失败截图"):
-                file = self.driver.get_screenshot_as_png() 
-                allure.attach(file, img_doc, allure.attachment_type.PNG)
+            self.add_allure_attach(img_doc)
             raise e  # 抛出异常
 
     def get_attribute(self, locate_type, value, img_doc, attr_name):
@@ -138,9 +139,7 @@ class BasePage:
             return el.get_attribute(attr_name)
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, attr_name, value))
-            with allure.step("添加失败截图"):
-                file = self.driver.get_screenshot_as_png() 
-                allure.attach(file, img_doc, allure.attachment_type.PNG)
+            self.add_allure_attach(img_doc)
             raise e  # 抛出异常
 
     def get_size(self):
