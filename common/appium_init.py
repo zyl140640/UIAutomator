@@ -9,6 +9,8 @@
 
 from appium import webdriver
 
+from common.adb_util import AdbUtil
+
 
 class AppStart:
     # 声明driver对象
@@ -17,10 +19,11 @@ class AppStart:
     # 使用classmethod方法，可以直接调用类中的属性和函数
     @classmethod
     def start(cls):
+        adb = AdbUtil()
         caps = {
             "platformName": "Android",
-            "deviceName": "U4AIUKFAL7W4MJLR",
-            "platforVersion": "10",
+            "deviceName": adb.get_devices(),
+            "platforVersion": adb.get_devices_version(),
             "appPackage": "com.mimu.mshop",
             "appActivity": "com.mimu.mshop.ui.SplashActivity",
             "autoGrantPermissions": "true",
@@ -31,6 +34,7 @@ class AppStart:
 
         cls.driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
         cls.driver.implicitly_wait(30)
+        adb.get_devices_version()
         return cls.driver
 
     # 退出app
