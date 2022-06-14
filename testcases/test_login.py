@@ -6,17 +6,26 @@
 @file: run.py
 @desc: 
 """
+import time
 
 from common.appium_init import AppStart
-from page.login_password import LoginPasswordPage
+from page.login_page import LoginPasswordPage
+from page.navigation_bar import NavigationBarPage
 
 
-class TestRun:
+class TestLogin:
     def setup_class(self):
         self.app = AppStart.start()
         self.login = LoginPasswordPage(self.app)
+        self.nav = NavigationBarPage(self.app)
 
-    def test_name(self):
+    def test_password_login(self):
+        """
+        测试密码登录业务流程
+        """
+        self.nav.my()
+        self.login.toggle_captcha_password_button()
+        time.sleep(2)
         self.login.login_password(15533065391, 123456)
 
     def teardown_class(self):
