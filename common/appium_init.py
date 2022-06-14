@@ -26,7 +26,7 @@ class AppStart:
             "autoGrantPermissions": "true",
             "automationName": "UiAutomator2",
             "udid": "",
-            'noReset': True,  # 不要重置App
+            'noReset': False,  # 不要重置App
         }
 
         cls.driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
