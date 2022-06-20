@@ -44,16 +44,6 @@ class LoginPasswordPage(BasePage):
         """
         self.click("id", "com.mimu.mshop:id/tv_login_forget", "切换到验证码登录页面")
 
-    def login_password(self, account, password):
-        """
-        手机号+密码登录流程
-        :param account: 手机号码
-        :param password:密码
-        """
-        self.input_account(account)
-        self.input_password(password)
-        self.login_button()
-
     def user_agreement_single_box(self):
         """
         手机号登录页面的用户协议按钮
@@ -77,3 +67,13 @@ class LoginPasswordPage(BasePage):
         其他方式登录-支付宝登录
         """
         self.click("id", "com.mimu.mshop:id/img_zfb", "支付宝登录")
+
+    def login_password(self, account, password):
+        """
+        手机号+密码登录流程
+        :param account: 手机号码
+        :param password:密码
+        """
+        self.input_account(account)
+        self.input_password(password)
+        self.login_button()

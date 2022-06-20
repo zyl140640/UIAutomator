@@ -15,23 +15,34 @@ from common.adb_util import *
 class AppStart:
     # 声明driver对象
     driver: webdriver = None
+    caps = {
+        "platformName": "Android",
+        "deviceName": get_devices(),
+        "platforVersion": get_devices_version(),
+        "appPackage": "com.mimu.mshop",
+        "appActivity": "com.mimu.mshop.ui.SplashActivity",
+        "autoGrantPermissions": "true",
+        "automationName": "UiAutomator2",
+        "udid": "",
+        'noReset': False,  # 不要重置App
+    }
 
     # 使用classmethod方法，可以直接调用类中的属性和函数
     @classmethod
     def start(cls):
-        caps = {
-            "platformName": "Android",
-            "deviceName": get_devices(),
-            "platforVersion": get_devices_version(),
-            "appPackage": "com.mimu.mshop",
-            "appActivity": "com.mimu.mshop.ui.SplashActivity",
-            "autoGrantPermissions": "true",
-            "automationName": "UiAutomator2",
-            "udid": "",
-            'noReset': False,  # 不要重置App
-        }
+        # caps = {
+        #     "platformName": "Android",
+        #     "deviceName": get_devices(),
+        #     "platforVersion": get_devices_version(),
+        #     "appPackage": "com.mimu.mshop",
+        #     "appActivity": "com.mimu.mshop.ui.SplashActivity",
+        #     "autoGrantPermissions": "true",
+        #     "automationName": "UiAutomator2",
+        #     "udid": "",
+        #     'noReset': False,  # 不要重置App
+        # }
 
-        cls.driver = webdriver.Remote("http://localhost:4723/wd/hub", caps)
+        cls.driver = webdriver.Remote("http://localhost:4723/wd/hub", cls.caps)
         cls.driver.implicitly_wait(30)
         return cls.driver
 

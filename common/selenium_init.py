@@ -17,7 +17,7 @@ class WebStart:
     @classmethod
     def start(cls):
         options = webdriver.ChromeOptions()
-        service = Service(executable_path="./config/chromedriver.exe")
+        service = Service(executable_path="./config/driver/chromedriver.exe")
         cls.driver = webdriver.Chrome(options=options, service=service)
         return cls.driver
 
