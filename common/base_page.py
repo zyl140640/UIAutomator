@@ -171,7 +171,6 @@ class BasePage:
             self.logger.error("<{}>页面元素<{}>定位失败！异常内容: <{}>".format(img_doc, value, e))
             raise e
 
-
     def target_click(self, x1, y1, img_doc):  # x1,y1为你编写脚本时适用设备的实际坐标
         x_1 = x1 / 375  # 计算坐标在横坐标上的比例，其中375为iphone6s的宽
         y_1 = y1 / 667  # 计算坐标在纵坐标667为iphone6s的高
