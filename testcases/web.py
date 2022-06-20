@@ -17,6 +17,8 @@ class Login(BasePage):
     def login(self):
         self.driver.get("http://192.168.31.166:8090/#/user/login")
         time.sleep(4)
+        self.input_data("id", "username", "输入账号", "123456")
+        time.sleep(4)
 
 
 if __name__ == '__main__':

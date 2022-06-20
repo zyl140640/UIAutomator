@@ -10,8 +10,8 @@
 import logging
 
 import allure
+from appium.webdriver.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 
 
