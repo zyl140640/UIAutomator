@@ -12,7 +12,6 @@ import logging
 import allure
 from appium.webdriver.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 
 
@@ -54,8 +53,10 @@ class BasePage:
                 el = wait.until(lambda diver: self.driver.find_element(By.LINK_TEXT, value), message='没找到该元素')
             elif locate_type == 'class_name':
                 el = wait.until(lambda diver: self.driver.find_element(By.CLASS_NAME, value), message='没找到该元素')
+            elif locate_type == 'predicate':
+                el = wait.until(lambda diver: self.driver.find_element_by_ios_predicate(value), message='没找到该元素')
             elif locate_type == 'accessibility_id':
-                el = wait.until(lambda diver: self.driver.find_element_by_ios_class_chain, message='没找到该元素')
+                el = wait.until(lambda diver: self.driver.find_element_by_accessibility_id(value), message='没找到该元素')
             if el is not None:
                 return el
             self.logger.info("<{}>,<{}>定位成功".format(img_doc, value))
