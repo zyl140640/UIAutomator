@@ -8,6 +8,7 @@
 """
 
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 
 
 class WebStart:
@@ -16,10 +17,10 @@ class WebStart:
     @classmethod
     def start(cls):
         options = webdriver.ChromeOptions()
-        cls.driver = webdriver.Chrome(options=options)
+        service = Service(executable_path="./config/chromedriver.exe")
+        cls.driver = webdriver.Chrome(options=options, service=service)
         return cls.driver
 
-    #
     # 退出app
     @classmethod
     def quit(cls):

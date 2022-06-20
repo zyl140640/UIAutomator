@@ -53,6 +53,8 @@ class BasePage:
                 el = wait.until(lambda diver: self.driver.find_element(By.LINK_TEXT, value), message='没找到该元素')
             elif locate_type == 'class_name':
                 el = wait.until(lambda diver: self.driver.find_element(By.CLASS_NAME, value), message='没找到该元素')
+            elif locate_type == 'accessibility_id':
+                el = wait.until(lambda diver: self.driver.find_element_by_ios_class_chain, message='没找到该元素')
             if el is not None:
                 return el
             self.logger.info("<{}>,<{}>定位成功".format(img_doc, value))
@@ -149,3 +151,16 @@ class BasePage:
         with allure.step("添加失败截图"):
             file = self.driver.get_screenshot_as_png()
             allure.attach(file, img_doc, allure.attachment_type.PNG)
+
+    def target_click(self, x1, y1, img_doc):  # x1,y1为你编写脚本时适用设备的实际坐标
+        x_1 = x1 / 375  # 计算坐标在横坐标上的比例，其中375为iphone6s的宽
+        y_1 = y1 / 667  # 计算坐标在纵坐标667为iphone6s的高
+        x = self.driver.get_window_size()['width']  # 获取设备的屏幕宽度
+        y = self.driver.get_window_size()['height']  # 获取设备屏幕的高度
+        print(x_1 * x, y_1 * y)  # 打印出点击的坐标点
+        try:
+            self.driver.tap([(x_1 * x, y_1 * y)], 500)  # 模拟单手点击操作
+        except Exception as e:
+            self.logger.error("在{}中获取元素<{}>的属性{}的值失败！,异常内容: <{}>".format(img_doc, x1, y1, e))
+            self.add_allure_attach(img_doc)
+            raise e
