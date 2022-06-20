@@ -10,10 +10,10 @@
 import logging
 
 import allure
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
-
 
 class BasePage:
     def __init__(self, driver: WebDriver):
@@ -152,6 +152,7 @@ class BasePage:
             file = self.driver.get_screenshot_as_png()
             allure.attach(file, img_doc, allure.attachment_type.PNG)
 
+
     def target_click(self, x1, y1, img_doc):  # x1,y1为你编写脚本时适用设备的实际坐标
         x_1 = x1 / 375  # 计算坐标在横坐标上的比例，其中375为iphone6s的宽
         y_1 = y1 / 667  # 计算坐标在纵坐标667为iphone6s的高
@@ -164,3 +165,23 @@ class BasePage:
             self.logger.error("在{}中获取元素<{}>的属性{}的值失败！,异常内容: <{}>".format(img_doc, x1, y1, e))
             self.add_allure_attach(img_doc)
             raise e
+
+    def scroll_to_element(self, locate_type, value, img_doc):
+        """
+        selenium通过JS滑动到指定元素
+        :param locate_type: 元素定位方式
+        :param value:  页面元素路径
+        :param img_doc: 截图说明
+        :return:  WebElement元素地址
+        """
+        try:
+            el = self.find_element(locate_type, value, img_doc)
+            self.driver.execute_script("arguments[0].scrollIntoView();", el)
+            self.logger.info("<{}>,<{}>定位成功".format(img_doc, value))
+            return el
+        except Exception as e:
+            self.logger.error("<{}>页面元素<{}>定位失败！异常内容: <{}>".format(img_doc, value, e))
+            raise e
+
+
+
