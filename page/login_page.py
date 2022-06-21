@@ -24,9 +24,9 @@ class LoginPasswordPage(BasePage):
     # 用户协议
     user_pact = ("id", "com.mimu.mshop:id/cb_register")
     # 其他登录方式 qq vx 支付宝
-    login_qq = ("id", "com.mimu.mshop:id/img_qq")
-    login_vx = ("id", "com.mimu.mshop:id/img_vx")
-    login_zfb = ("id", "com.mimu.mshop:id/img_zfb")
+    login_qq_button = ("id", "com.mimu.mshop:id/img_qq")
+    login_vx_button = ("id", "com.mimu.mshop:id/img_vx")
+    login_zfb_button = ("id", "com.mimu.mshop:id/img_zfb")
 
     def input_account(self, account):
         """
@@ -71,19 +71,19 @@ class LoginPasswordPage(BasePage):
         """
         其他方式登录-QQ登录
         """
-        self.click(self.login_qq, "QQ登录")
+        self.click(self.login_qq_button, "QQ登录")
 
     def wechat_login(self):
         """
         其他方式登录-微信登录
         """
-        self.click(self.login_vx, "微信登录")
+        self.click(self.login_vx_button, "微信登录")
 
     def zfb_login(self):
         """
         其他方式登录-支付宝登录
         """
-        self.click(self.login_zfb, "支付宝登录")
+        self.click(self.login_zfb_button, "支付宝登录")
 
     def login_password(self, account, password):
         """
