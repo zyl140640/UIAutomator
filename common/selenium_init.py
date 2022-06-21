@@ -6,8 +6,8 @@
 @file: selenium_init.py
 @desc: 
 """
-
 from selenium import webdriver
+from selenium.common import WebDriverException
 from selenium.webdriver.chrome.service import Service
 
 
@@ -17,9 +17,14 @@ class WebStart:
     @classmethod
     def start(cls):
         options = webdriver.ChromeOptions()
-        service = Service(executable_path="./config/driver/chromedriver.exe")
-        cls.driver = webdriver.Chrome(options=options, service=service)
-        return cls.driver
+        try:
+            service = Service(executable_path="./config/driver/chromedriver.exe")
+            cls.driver = webdriver.Chrome(options=options, service=service)
+            return cls.driver
+        except WebDriverException:
+            service = Service(executable_path="./config/driver/chromedriver_mac64.exe")
+            cls.driver = webdriver.Chrome(options=options, service=service)
+            return cls.driver
 
     # 退出app
     @classmethod
