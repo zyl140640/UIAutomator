@@ -6,6 +6,8 @@
 @file: login_page.py
 @desc: 密码登录页面的操作元素封装
 """
+import time
+
 
 from common.base_page import BasePage
 
@@ -96,9 +98,10 @@ class LoginPasswordPage(BasePage):
         self.login()
 
     def test(self):
-        self.time.sleep(3)
-        name = ("id", "com.mimu.mshop:id/ll_layout", 0)
+        name = ("id", "com.mimu.mshop:id/ll_layout",2)
         # name = self.driver.find_elements(AppiumBy.ID, "com.mimu.mshop:id/ll_layout")
-        # name[1].click()
-        # self.logger.info("元素值:{}".format(name))
+        # name[2].click()
         self.click(name, "定位餐厅")
+        time.sleep(3)
+
+        # self.logger.info("元素值:{}".format(name))

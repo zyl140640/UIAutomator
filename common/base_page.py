@@ -115,20 +115,20 @@ class BasePage:
         点击按钮
         :param locate:  元素定位方式+路径  元组类型传入
         :param img_doc: 截图说明
-        :return:
         """
         try:
-            el = self.find_element(locate, img_doc)
-            el.click()
-            self.logger.info("在<{}>中,点击元素<{}>成功".format(img_doc, locate[1]))
+            if len(locate) == 2:
+                el = self.find_element(locate, img_doc)
+                el.click()
+                self.logger.info("点击<{}>成功,元素和定位方式:{}".format(img_doc, locate))
+            else:
+                el = self.find_elements(locate, img_doc)
+                el[locate[2]].click()
+                self.logger.info("点击<{}>成功,元素和定位方式:{}".format(img_doc, locate))
         except Exception as e:
-            el = self.find_elements(locate, img_doc)
-            el[locate[2]].click()
-            self.logger.info("在<{}>中,点击元素<{}>成功".format(img_doc, locate[1]))
-            raise e
-        else:
-            self.logger.error("<{}>中,点击元素<{}>失败".format(img_doc, locate[1]))
+            self.logger.error("点击<{}>失败,元素和定位方式:{}".format(img_doc, locate))
             self.add_allure_attach(img_doc)
+            raise e
 
     def input_data(self, locate, img_doc, text):
         """
@@ -136,20 +136,20 @@ class BasePage:
         :param locate: 元素定位方式
         :param text: 输入的文本内容
         :param img_doc: 截图说明
-        :return:
        """
         try:
-            el = self.find_element(locate, img_doc)
-            self.logger.info("在<{}>功能的<{}>元素中输入内容为{}: ".format(img_doc, locate[1], text))
-            el.send_keys(text)
+            if len(locate) == 2:
+                el = self.find_element(locate, img_doc)
+                self.logger.info("在<{}>功能的<{}>元素中输入内容为{}: ".format(img_doc, locate[1], text))
+                el.send_keys(text)
+            else:
+                el = self.find_elements(locate, img_doc)
+                self.logger.info("在<{}>功能的<{}>元素中输入内容为{}: ".format(img_doc, locate[1], text))
+                el[locate[2]].send_keys(text)
         except Exception as e:
-            el = self.find_elements(locate, img_doc)
-            self.logger.info("在<{}>功能的<{}>元素中输入内容为{}: ".format(img_doc, locate[1], text))
-            el[locate[2]].send_keys(text)
-            raise e
-        else:
             self.logger.error("在元素<{}>中输入内容{}失败！".format(locate[1], text))
             self.add_allure_attach(img_doc)
+            raise e
 
     def assert_text(self, locate, img_doc, expect_text):
         """
