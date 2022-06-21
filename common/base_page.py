@@ -5,9 +5,12 @@
 @time: 2022/5/31 17:06
 @file: base_page.py
 @desc: 基础类，封装元素定位操作
-
+定位使用优先级:
+Android：AndroidUIAutomator > className = id = AccessibilityId > xpath。
+iOS：iOSNsPredicateString > className = AccessibilityId> xpath。
 """
 import logging
+import time
 
 import allure
 from appium.webdriver.webdriver import WebDriver
@@ -23,12 +26,12 @@ class BasePage:
         """
         self.driver = driver
         self.logger = logging
+        self.time = time
 
-    def find_element(self, locate_type, value, img_doc, timeout=10, frequency=0.5):
+    def find_element(self, locate_type, img_doc, timeout=10, frequency=0.5):
         """
         检测定位元素是否存在
-        :param locate_type: 元素定位方式
-        :param value:  页面元素路径
+        :param locate_type: 元素定位方式+路径
         :param img_doc: 截图说明
         :param timeout: 等待的超时时间
         :param frequency: 轮询频率
@@ -37,102 +40,100 @@ class BasePage:
         try:
             el = None
             wait = WebDriverWait(self.driver, timeout, frequency)
-            if locate_type == 'id':
-                el = wait.until(lambda diver: self.driver.find_element(By.ID, value), message='没找到该元素')
-            elif locate_type == 'xpath':
-                el = wait.until(lambda diver: self.driver.find_element(By.XPATH, value), message='没找到该元素')
-            elif locate_type == 'name':
-                el = wait.until(lambda diver: self.driver.find_element(By.NAME, value), message='没找到该元素')
-            elif locate_type == 'css_selector':
-                el = wait.until(lambda diver: self.driver.find_element(By.CSS_SELECTOR, value), message='没找到该元素')
-            elif locate_type == 'tag_name':
-                el = wait.until(lambda diver: self.driver.find_element(By.TAG_NAME, value), message='没找到该元素')
-            elif locate_type == 'partial_link_text':
-                el = wait.until(lambda diver: self.driver.find_element(By.PARTIAL_LINK_TEXT, value), message='没找到该元素')
-            elif locate_type == 'link_text':
-                el = wait.until(lambda diver: self.driver.find_element(By.LINK_TEXT, value), message='没找到该元素')
-            elif locate_type == 'class_name':
-                el = wait.until(lambda diver: self.driver.find_element(By.CLASS_NAME, value), message='没找到该元素')
-            elif locate_type == 'predicate':
-                el = wait.until(lambda diver: self.driver.find_element_by_ios_predicate(value), message='没找到该元素')
-            elif locate_type == 'accessibility_id':
-                el = wait.until(lambda diver: self.driver.find_element_by_accessibility_id(value), message='没找到该元素')
+            if locate_type[0] == 'id':
+                el = wait.until(lambda diver: self.driver.find_element(By.ID, locate_type[1]), message='没找到该元素')
+            elif locate_type[0] == 'xpath':
+                el = wait.until(lambda diver: self.driver.find_element(By.XPATH, locate_type[1]), message='没找到该元素')
+            elif locate_type[0] == 'name':
+                el = wait.until(lambda diver: self.driver.find_element(By.NAME, locate_type[1]), message='没找到该元素')
+            elif locate_type[0] == 'css_selector':
+                el = wait.until(lambda diver: self.driver.find_element(By.CSS_SELECTOR, locate_type[1]),
+                                message='没找到该元素')
+            elif locate_type[0] == 'tag_name':
+                el = wait.until(lambda diver: self.driver.find_element(By.TAG_NAME, locate_type[1]), message='没找到该元素')
+            elif locate_type[0] == 'partial_link_text':
+                el = wait.until(lambda diver: self.driver.find_element(By.PARTIAL_LINK_TEXT, locate_type[1]),
+                                message='没找到该元素')
+            elif locate_type[0] == 'link_text':
+                el = wait.until(lambda diver: self.driver.find_element(By.LINK_TEXT, locate_type[1]), message='没找到该元素')
+            elif locate_type[0] == 'class_name':
+                el = wait.until(lambda diver: self.driver.find_element(By.CLASS_NAME, locate_type[1]), message='没找到该元素')
+            elif locate_type[0] == 'predicate':
+                el = wait.until(lambda diver: self.driver.find_element_by_ios_predicate(locate_type[1]), message='没找到该元素')
+            elif locate_type[0] == 'accessibility_id':
+                el = wait.until(lambda diver: self.driver.find_element_by_accessibility_id(locate_type[1]), message='没找到该元素')
             if el is not None:
                 return el
-            self.logger.info("<{}>,<{}>定位成功".format(img_doc, value))
+            self.logger.info("<{}>,元素<{}>定位成功".format(img_doc, locate_type[1]))
         except Exception as e:
-            self.logger.error("<{}>页面元素<{}>定位失败！异常内容: <{}>".format(img_doc, value, e))
+            self.logger.error("<{}>元素<{}>定位失败！".format(img_doc, locate_type[1], ))
             raise e
 
-    def click(self, locate_type, value, img_doc):
+    def click(self, locate_type, img_doc):
         """
         点击按钮
-        :param value: 页面元素路径
-        :param locate_type:  元素定位方式
+        :param locate_type:  元素定位方式+路径
         :param img_doc: 截图说明
         :return:
         """
         try:
-            el = self.find_element(locate_type, value, img_doc)
+            el = self.find_element(locate_type, img_doc)
             el.click()
-            self.logger.info("在<{}>中,点击元素<{}>成功".format(img_doc, value))
+            self.logger.info("在<{}>中,点击元素<{}>成功".format(img_doc, locate_type[1]))
         except Exception as e:
-            self.logger.error("<{}>中,点击元素<{}>失败,异常内容: <{}>".format(img_doc, value, e))
+            self.logger.error("<{}>中,点击元素<{}>失败".format(img_doc, locate_type[1]))
             self.add_allure_attach(img_doc)
             raise e
 
-    def input_data(self, locate_type, value, img_doc, text):
+    def input_data(self, locate_type, img_doc, text):
         """
         对输入框输入文本内容
-        :param value: 页面元素路径
         :param locate_type: 元素定位方式
         :param text: 输入的文本内容
         :param img_doc: 截图说明
         :return:
        """
         try:
-            el = self.find_element(locate_type, value, img_doc)
-            self.logger.info("在<{}>功能的<{}>元素中输入内容为{}: ".format(img_doc, value, text))
+            el = self.find_element(locate_type, img_doc)
+            self.logger.info("在<{}>功能的<{}>元素中输入内容为{}: ".format(img_doc, locate_type[1], text))
             el.send_keys(text)
         except Exception as e:
-            self.logger.error("在元素<{}>中输入内容{}失败！,异常内容: <{}>".format(locate_type, text, e))
+            self.logger.error("在元素<{}>中输入内容{}失败！".format(locate_type[1], text))
             self.add_allure_attach(img_doc)
             raise e
 
-    def assert_text(self, locate_type, value, img_doc, expect_text):
+    def assert_text(self, locate_type, img_doc, expect_text):
         """
         获取WebElement对象的文本值
-        :param value: 页面元素路径
         :param locate_type: 元素定位方式
         :param expect_text: 预期文本
         :param img_doc: 截图说明
         :return: WebElement对象的文本值
         """
         try:
-            self.logger.info("在{}中获取元素<{}>的文本值".format(img_doc, locate_type))
-            el = self.find_element(locate_type, value, img_doc)
+            self.logger.info("在{}中获取元素<{}>的文本值".format(img_doc, locate_type[1]))
+            el = self.find_element(locate_type, img_doc)
             assert el.text == expect_text, "{}断言失败".format(img_doc)
             return el.text
         except Exception as e:
-            self.logger.error("在{}中获取元素<{}>的文本值失败！,异常内容: <{}>".format(img_doc, locate_type, e))
+            self.logger.error("在{}中获取元素<{}>的文本值失败！".format(img_doc, locate_type[1]))
             self.add_allure_attach(img_doc)
             raise e
 
-    def get_attribute(self, locate_type, value, img_doc, attr_name):
+    def get_attribute(self, locate_type, img_doc, attr_name):
         """
         获取WebElement对象的属性值
-        :param value: 页面元素路径
-        :param locate_type: 元素定位方式
+        :param locate_type: 元素定位方式+路径
         :param img_doc: 截图说明
         :param attr_name: 属性名称
         :return: WebElement对象的属性值
         """
         try:
-            el = self.find_element(locate_type, value, img_doc)
-            self.logger.info("成功获取<{}>元素<{}>属性{}的值".format(img_doc, attr_name, value))
+            el = self.find_element(locate_type, img_doc)
+            self.logger.info("成功获取<{}>元素<{}>属性{}的值".format(img_doc, attr_name, locate_type[1]))
             return el.get_attribute(attr_name)
         except Exception as e:
-            self.logger.error("在{}中获取元素<{}>的属性{}的值失败！,异常内容: <{}>".format(img_doc, attr_name, value, e))
+            self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, attr_name, locate_type[1]))
             self.add_allure_attach(img_doc)
             raise e
 
@@ -154,21 +155,20 @@ class BasePage:
             file = self.driver.get_screenshot_as_png()
             allure.attach(file, img_doc, allure.attachment_type.PNG)
 
-    def scroll_to_element(self, locate_type, value, img_doc):
+    def scroll_to_element(self, locate_type, img_doc):
         """
         selenium通过JS滑动到指定元素
-        :param locate_type: 元素定位方式
-        :param value:  页面元素路径
+        :param locate_type: 元素定位方式+路径
         :param img_doc: 截图说明
         :return:  WebElement元素地址
         """
         try:
-            el = self.find_element(locate_type, value, img_doc)
+            el = self.find_element(locate_type, img_doc)
             self.driver.execute_script("arguments[0].scrollIntoView();", el)
-            self.logger.info("<{}>,<{}>定位成功".format(img_doc, value))
+            self.logger.info("<{}>,<{}>定位成功".format(img_doc, locate_type[1]))
             return el
         except Exception as e:
-            self.logger.error("<{}>页面元素<{}>定位失败！异常内容: <{}>".format(img_doc, value, e))
+            self.logger.error("<{}>页面元素<{}>定位失败！异常内容: <{}>".format(img_doc, locate_type[1], e))
             raise e
 
     def target_click(self, x1, y1, img_doc):  # x1,y1为你编写脚本时适用设备的实际坐标
