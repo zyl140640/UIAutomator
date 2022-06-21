@@ -22,7 +22,7 @@ class WebStart:
             cls.driver = webdriver.Chrome(options=options, service=service)
             return cls.driver
         except WebDriverException:
-            service = Service(executable_path="./config/driver/chromedriver_mac64.exe")
+            service = Service(executable_path="./config/driver/chromedriver")
             cls.driver = webdriver.Chrome(options=options, service=service)
             return cls.driver
 
