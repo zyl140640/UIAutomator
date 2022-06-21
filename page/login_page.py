@@ -94,3 +94,11 @@ class LoginPasswordPage(BasePage):
         self.input_account(account)
         self.input_password(password)
         self.login()
+
+    def test(self):
+        self.time.sleep(3)
+        name = ("id", "com.mimu.mshop:id/ll_layout", 0)
+        # name = self.driver.find_elements(AppiumBy.ID, "com.mimu.mshop:id/ll_layout")
+        # name[1].click()
+        # self.logger.info("元素值:{}".format(name))
+        self.click(name, "定位餐厅")

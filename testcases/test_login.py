@@ -22,10 +22,11 @@ class TestLogin:
         """
         测试密码登录业务流程
         """
-        self.nav.my_nav()
-        self.login.toggle_captcha_password_button()
-        self.login.login_password(15533065391, "abcd1234567890123456")
-        self.nav.enter_market_page()
+        self.login.test()
+        # self.nav.my_nav()
+        # self.login.toggle_captcha_password_button()
+        # self.login.login_password(15533065391, "abcd1234567890123456")
+        # self.nav.enter_market_page()
 
     def teardown_class(self):
         """
