@@ -9,7 +9,7 @@
 
 from common.appium_init import AppStart
 from page.login_page import LoginPasswordPage
-from page.navigation_bar import NavigationBarPage
+from page.main_page import NavigationBarPage
 
 
 class TestLogin:
