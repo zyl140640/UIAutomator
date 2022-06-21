@@ -9,7 +9,7 @@
 from common.base_page import BasePage
 
 
-class NavigationBarPage(BasePage):
+class MainPage(BasePage):
     """
     nav_main: 底部导航栏-首页
     nav_category: 底部导航栏-分类
