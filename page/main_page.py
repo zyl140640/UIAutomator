@@ -23,16 +23,25 @@ class MainPage(BasePage):
     nav_cart = ('id', 'com.mimu.mshop:id/shopFragment')
     nav_my = ('id', 'com.mimu.mshop:id/mineFragment')
     # 首页金刚区-超市按钮
-    vajra_market_icon = ("id", "com.mimu.mshop:id/ll_layout", 0)
+    vajra_market_icon = ("id", "com.mimu.mshop:id/tv_name", 0)
     # 首页金刚区-餐厅按钮
-    vajra_restaurant_icon = ("id", "com.mimu.mshop:id/ll_layout", 1)
+    vajra_restaurant_icon = ("id", "com.mimu.mshop:id/tv_name", 1)
     # 首页金刚区-门店按钮
-    vajra_offline_icon = ("id", "com.mimu.mshop:id/ll_layout", 2)
+    vajra_offline_icon = ("id", "com.mimu.mshop:id/tv_name", 2)
     # 首页金刚区-优惠券按钮
-    vajra_coupon_icon = ("id", "com.mimu.mshop:id/ll_layout", 3)
+    vajra_coupon_icon = ("id", "com.mimu.mshop:id/tv_name", 3)
     # 首页金刚区-会员按钮
-    vajra_vip_icon = ("id", "com.mimu.mshop:id/ll_layout", 4)
+    vajra_vip_icon = ("id", "com.mimu.mshop:id/tv_name", 4)
+    # 返回按钮
+    back_button = ('id', 'com.mimu.mshop:id/back')
+    # 顶部扫一扫按钮
+    header_scan = ('id', 'com.mimu.mshop:id/img_scan')
+    # 顶部二维码按钮
+    header_qrcode = ('id', 'com.mimu.mshop:id/img_qCode')
+    # 顶部消息按钮
+    header_message = ('id', 'com.mimu.mshop:id/img_msg')
 
+    # 定义底部导航栏方法
     def main_nav(self):
         """
         点击底部导航栏首页
@@ -63,6 +72,7 @@ class MainPage(BasePage):
         """
         self.click(self.nav_my, '底部导航栏-我的')
 
+    # 定义金刚区方法
     def enter_market_page(self):
         """
         点击首页超市按钮
@@ -92,3 +102,22 @@ class MainPage(BasePage):
         点击首页会员按钮
         """
         self.click(self.vajra_vip_icon, '点击首页会员按钮')
+
+    # 定义header区域方法
+    def scan(self):
+        """
+        点击扫一扫按钮
+        """
+        self.click(self.header_scan, '点击扫一扫按钮')
+
+    def qrcode(self):
+        """
+        点击二维码按钮
+        """
+        self.click(self.header_qrcode, '点击二维码按钮')
+
+    def message(self):
+        """
+        点击消息按钮
+        """
+        self.click(self.header_message, '点击消息按钮')
