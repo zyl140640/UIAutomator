@@ -31,9 +31,7 @@ class GoodsPage(BasePage):
 
     def goods_add(self):
         self.time.sleep(2)
-        self.get_text_click(self.goods_Shop_goods, "点击商品", "仿真书装饰品12222222222222")
-        # el = self.driver.find_elements("id", "com.mimu.mshop:id/tv_name")
-        # for lists in el:
-        #     self.logger.info("元素列表返回的{}".format(lists.text))
+        self.get_text_click(self.goods_Shop_goods, "点击商品", "优惠券")
+        # self.get_text_click(("id", "com.mimu.mshop:id/tv_name"), "点击门店", "超市")
         self.time.sleep(2)
-        self.click(self.goods_Coupon, "添加商品到购物车")
+        # self.click(self.goods_Coupon, "添加商品到购物车")
