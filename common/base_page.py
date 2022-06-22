@@ -66,7 +66,7 @@ class BasePage:
                 return el
             self.logger.info("<{}>,元素<{}>定位成功".format(img_doc, locate[1]))
         except Exception as e:
-            self.logger.error("<{}>元素<{}>定位失败！".format(img_doc, locate[1], ))
+            self.logger.error("<{}>元素<{}>定位失败！".format(img_doc, locate[1]))
             raise e
 
     def find_elements(self, locate, img_doc, timeout=10, frequency=0.5):
@@ -107,7 +107,7 @@ class BasePage:
                 return el
             self.logger.info("<{}>,元素<{}>定位成功".format(img_doc, locate[1]))
         except Exception as e:
-            self.logger.error("<{}>元素<{}>定位失败！".format(img_doc, locate[1], ))
+            self.logger.error("<{}>元素<{}>定位失败！".format(img_doc, locate[1]))
             raise e
 
     def click(self, locate, img_doc):
@@ -169,20 +169,23 @@ class BasePage:
             self.add_allure_attach(img_doc)
             raise e
 
-    def get_attribute(self, locate, img_doc, attr_name):
+    def get_text_click(self, locate, img_doc, text=None):
         """
-        获取WebElement对象的属性值
+        获取WebElement对象的文本内容并进行点击操作  不填写text则返回 元素对象列表
+        :param text: 对象的文本内容 默认可以不填写
         :param locate: 元素定位方式+路径
         :param img_doc: 截图说明
-        :param attr_name: 属性名称
-        :return: WebElement对象的属性值
+        :return: WebElement对象的属性值 list类型
         """
         try:
-            el = self.find_element(locate, img_doc)
-            self.logger.info("成功获取<{}>元素<{}>属性{}的值".format(img_doc, attr_name, locate[1]))
-            return el.get_attribute(attr_name)
+            el = self.find_elements(locate, img_doc)
+            for lists in el:
+                self.logger.info("元素列表返回的{}".format(lists.text))
+                if lists.text == text:
+                    lists.click()
+            return el
         except Exception as e:
-            self.logger.error("在{}中获取元素<{}>的属性{}的值失败！".format(img_doc, attr_name, locate[1]))
+            self.logger.error("在{}中获取元素<{}>的属性的文本内容失败！".format(img_doc, locate))
             self.add_allure_attach(img_doc)
             raise e
 
