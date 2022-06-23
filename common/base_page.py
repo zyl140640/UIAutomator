@@ -102,7 +102,8 @@ class BasePage:
             elif locate[0] == 'predicate':
                 el = wait.until(lambda diver: self.driver.find_elements_by_ios_predicate(locate[1]), message='没找到该元素')
             elif locate[0] == 'accessibility_id':
-                el = wait.until(lambda diver: self.driver.find_elements_by_accessibility_id(locate[1]), message='没找到该元素')
+                el = wait.until(lambda diver: self.driver.find_elements_by_accessibility_id(locate[1]),
+                                message='没找到该元素')
             if el is not None:
                 return el
             self.logger.info("<{}>,元素<{}>定位成功".format(img_doc, locate[1]))
@@ -184,6 +185,24 @@ class BasePage:
                 if lists.text == text:
                     lists.click()
             return el
+        except Exception as e:
+            self.logger.error("在{}中获取元素<{}>的属性的文本内容失败！".format(img_doc, locate))
+            self.add_allure_attach(img_doc)
+            raise e
+
+    def get_elements_text(self, locate, img_doc):
+        """
+        获取WebElement对象的文本内容并返回
+        :param locate: 元素定位方式+路径
+        :param img_doc: 截图说明
+        :return: WebElement对象的text list类型
+        """
+        try:
+            element = self.find_elements(locate, img_doc)
+            text_list = []
+            for el in element:
+                text_list.append(el.text)
+            return text_list
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的属性的文本内容失败！".format(img_doc, locate))
             self.add_allure_attach(img_doc)
