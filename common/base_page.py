@@ -184,6 +184,7 @@ class BasePage:
                 self.logger.info("元素列表返回的{}".format(lists.text))
                 if lists.text == text:
                     lists.click()
+                    break
             return el
         except Exception as e:
             self.logger.error("在{}中获取元素<{}>的属性的文本内容失败！".format(img_doc, locate))
