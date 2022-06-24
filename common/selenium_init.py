@@ -6,10 +6,9 @@
 @file: selenium_init.py
 @desc: 
 """
-
+import logging
 
 from selenium import webdriver
-from threading import Thread
 from selenium.common import WebDriverException
 from selenium.webdriver.chrome.service import Service
 
@@ -18,7 +17,7 @@ class WebStart:
     driver: webdriver = None
 
     @classmethod
-    def start(cls, web_browser, url):
+    def start(cls, web_browser):
         browser = web_browser.lower()
         # 判断browser的值
         if browser == "safari":
@@ -29,7 +28,7 @@ class WebStart:
             options = webdriver.FirefoxOptions()
             service = Service(executable_path="./config/driver/geckodriver")
             cls.driver = webdriver.Firefox(options=options, service=service)
-        else:
+        elif browser == "chrome":
             cls.driver = webdriver.Chrome()
             options = webdriver.ChromeOptions()
             try:
@@ -38,15 +37,14 @@ class WebStart:
             except WebDriverException:
                 service = Service(executable_path="./config/driver/chromedriver")
                 cls.driver = webdriver.Chrome(options=options, service=service)
-        # 打开目标网址
-        cls.driver.get(url)
+        else:
+            logging.info("浏览器型号未传入，或浏览器名称输入错误")
         return cls.driver
 
+    # 退出app
     @classmethod
     def quit(cls):
         cls.driver.quit()
-
-
 
     # @classmethod
     # def start(cls):
@@ -59,5 +57,3 @@ class WebStart:
     #         service = Service(executable_path="./config/driver/chromedriver")
     #         cls.driver = webdriver.Chrome(options=options, service=service)
     #         #return cls.driver
-
-    # 退出app
