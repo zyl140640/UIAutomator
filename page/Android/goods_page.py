@@ -31,7 +31,6 @@ class GoodsPage(BasePage):
 
     def goods_add(self):
         self.time.sleep(2)
-        self.get_text_click(self.goods_Shop_goods, "点击商品", "优惠券")
-        # self.get_text_click(("id", "com.mimu.mshop:id/tv_name"), "点击门店", "超市")
+        self.get_text_click(("id", "com.mimu.mshop:id/tv_name"), "点击超市", "超市")
         self.time.sleep(2)
-        # self.click(self.goods_Coupon, "添加商品到购物车")
+        self.click(self.goods_Coupon, "添加商品到购物车")
