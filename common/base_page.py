@@ -9,6 +9,7 @@
 Android：AndroidUIAutomator > className = id = AccessibilityId > xpath。
 iOS：iOSNsPredicateString > className = AccessibilityId> xpath。
 """
+import json
 import logging
 import time
 
@@ -57,11 +58,14 @@ class BasePage:
             elif locate[0] == 'link_text':
                 el = wait.until(lambda diver: self.driver.find_element(By.LINK_TEXT, locate[1]), message='没找到该元素')
             elif locate[0] == 'class_name':
-                el = wait.until(lambda diver: self.driver.find_element(By.CLASS_NAME, locate[1]), message='没找到该元素')
+                el = wait.until(lambda diver: self.driver.find_element(By.CLASS_NAME, locate[1]),
+                                message='没找到该元素')
             elif locate[0] == 'predicate':
-                el = wait.until(lambda diver: self.driver.find_element_by_ios_predicate(locate[1]), message='没找到该元素')
+                el = wait.until(lambda diver: self.driver.find_element_by_ios_predicate(locate[1]),
+                                message='没找到该元素')
             elif locate[0] == 'accessibility_id':
-                el = wait.until(lambda diver: self.driver.find_element_by_accessibility_id(locate[1]), message='没找到该元素')
+                el = wait.until(lambda diver: self.driver.find_element_by_accessibility_id(locate[1]),
+                                message='没找到该元素')
             if el is not None:
                 return el
             self.logger.info("<{}>,元素<{}>定位成功".format(img_doc, locate[1]))
@@ -96,11 +100,14 @@ class BasePage:
                 el = wait.until(lambda diver: self.driver.find_elements(By.PARTIAL_LINK_TEXT, locate[1]),
                                 message='没找到该元素')
             elif locate[0] == 'link_text':
-                el = wait.until(lambda diver: self.driver.find_elements(By.LINK_TEXT, locate[1]), message='没找到该元素')
+                el = wait.until(lambda diver: self.driver.find_elements(By.LINK_TEXT, locate[1]),
+                                message='没找到该元素')
             elif locate[0] == 'class_name':
-                el = wait.until(lambda diver: self.driver.find_elements(By.CLASS_NAME, locate[1]), message='没找到该元素')
+                el = wait.until(lambda diver: self.driver.find_elements(By.CLASS_NAME, locate[1]),
+                                message='没找到该元素')
             elif locate[0] == 'predicate':
-                el = wait.until(lambda diver: self.driver.find_elements_by_ios_predicate(locate[1]), message='没找到该元素')
+                el = wait.until(lambda diver: self.driver.find_elements_by_ios_predicate(locate[1]),
+                                message='没找到该元素')
             elif locate[0] == 'accessibility_id':
                 el = wait.until(lambda diver: self.driver.find_elements_by_accessibility_id(locate[1]),
                                 message='没找到该元素')
@@ -255,3 +262,48 @@ class BasePage:
             self.logger.error("在{}中获取元素<{}>的属性{}的值失败！,异常内容: <{}>".format(img_doc, x1, y1, e))
             self.add_allure_attach(img_doc)
             raise e
+
+    def input_clear(self, locate, img_doc):
+        """
+        清空输入框内容
+        :param locate: 元素定位方式
+        :param img_doc: 截图说明
+       """
+        try:
+            if len(locate) == 2:
+                el = self.find_element(locate, img_doc)
+                self.logger.info("清空{}输入框".format(img_doc))
+                el.clear()
+            else:
+                el = self.find_elements(locate, img_doc)
+                self.logger.info("清空{}输入框: ".format(img_doc))
+                el[locate[2]].clear()
+        except Exception as e:
+            self.logger.error("清空{}输入框失败！".format(img_doc))
+            self.add_allure_attach(img_doc)
+            raise e
+
+    def get_cookie(self):
+        """
+        获取登录后的cookie信息   配合add_cookie使用   用于有验证码的登录页面
+        """
+        time.sleep(10)
+        with open('./config/cookie.txt', 'w') as f:
+            # 将cookies保存为json格式
+            f.write(json.dumps(self.driver.get_cookies()))
+        time.sleep(10)
+
+    def add_cookies(self):
+        """
+        插入登录cookie并刷新页面,进入登录后的页面   配合get_cookie使用   用于有验证码的登录页面
+        """
+        # 清楚浏览器自存的cookies
+        self.driver.delete_all_cookies()
+        # 读取获取到的json格式的cookie
+        with open('./config/cookie.txt', 'r') as f:
+            # 将cookies保存为json格式
+            cookies_list = json.load(f)
+            for cookie in cookies_list:
+                self.driver.add_cookie(cookie)
+        # 刷新浏览器页面
+        self.driver.refresh()

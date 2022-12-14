@@ -22,8 +22,10 @@ class WebStart:
         # 判断browser的值
         if browser == "safari":
             cls.driver = webdriver.Safari()
-        elif browser == "ie":
-            cls.driver = webdriver.Ie()
+        elif browser == "edge":
+            options = webdriver.EdgeOptions()
+            service = Service(executable_path="D:\App\BrowserDriver\msedgedriver.exe")
+            cls.driver = webdriver.Edge(options=options, service=service)
         elif browser == "firefox":
             options = webdriver.FirefoxOptions()
             service = Service(executable_path="./config/driver/geckodriver")
